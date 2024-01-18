@@ -41,8 +41,11 @@ The platform is enriched with AI capabilities for a smarter and more personalize
 1. Clone the repository.
 2. Install dependencies (`pip install -r requirements.txt`).
 3. Run migrations (`python manage.py migrate`).
-4. Run the development server (`python manage.py runserver`).
-5. Visit `http://localhost:8000` in your browser.
+4. Install spaCy Models with
+   - `python -m spacy download en_core_web_md`
+   - `python -m spacy download en_core_web_sm`
+6. Run the development server (`python manage.py runserver`).
+7. Visit `http://localhost:8000` in your browser.
 
 ## Contact
 
