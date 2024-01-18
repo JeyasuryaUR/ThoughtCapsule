@@ -1,0 +1,153 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Analytics</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Capsules</h5>
+                    <p class="card-text" id="totalCapsules"></p>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Average Sentiment</h5>
+                    <p class="card-text" id="averageSentiment"></p>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Predicted Tags for Next Capsule</h5>
+                    <p class="card-text" id="predictedTags"></p>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Most Common Category</h5>
+                    <p class="card-text" id="mostCommonCategory"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Capsules per Category</h5>
+                    <div id="categoryChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Most Common Tags</h5>
+                    <div id="tagChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Sentiment Distribution</h5>
+                    <div id="sentimentChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Capsules Over Time</h5>
+                    <div id="timeChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('totalCapsules').textContent = "{{ total_capsules|escapejs }}";
+    document.getElementById('predictedTags').textContent = "{{ predicted_tags|join:", "|escapejs }}";
+    document.getElementById('mostCommonCategory').textContent = "{{ most_common_category|escapejs }}";
+
+    let averageSentiment = "{{ average_sentiment|floatformat:2|escapejs }}";;
+
+    let sentimentDescription;
+    if (averageSentiment > 0.75) {
+        sentimentDescription = 'Very Positive';
+    } else if (averageSentiment > 0.5) {
+        sentimentDescription = 'Positive';
+    } else if (averageSentiment > 0.25) {
+        sentimentDescription = 'Slightly Positive';
+    } else if (averageSentiment > 0) {
+        sentimentDescription = 'Neutral';
+    } else if (averageSentiment > -0.25) {
+        sentimentDescription = 'Slightly Negative';
+    } else if (averageSentiment > -0.5) {
+        sentimentDescription = 'Negative';
+    } else {
+        sentimentDescription = 'Very Negative';
+    }
+
+    document.getElementById('averageSentiment').textContent = `${sentimentDescription} Thoughts (~${averageSentiment})`;
+
+    var categoryData = JSON.parse('{{ category_data|escapejs }}');
+    var tagData = JSON.parse('{{ tag_data|escapejs }}');
+    var sentimentData = JSON.parse('{{ sentiment_data|escapejs }}');
+    var timeData = JSON.parse('{{ time_data|escapejs }}');
+
+    Highcharts.chart('categoryChart', {
+        chart: { type: 'column' },
+        title: { text: 'Capsules per Category' },
+        xAxis: { categories: categoryData.map(item => item[0]) },
+        series: [{
+            name: 'Categories',
+            data: categoryData.map(item => item[1])
+        }]
+    });
+
+    Highcharts.chart('tagChart', {
+        chart: { type: 'column' },
+        title: { text: 'Most Common Tags' },
+        xAxis: { categories: tagData.map(item => item[0]) },
+        series: [{
+            name: 'Tags',
+            data: tagData.map(item => item[1])
+        }]
+    });
+
+    Highcharts.chart('sentimentChart', {
+        chart: { type: 'pie' },
+        title: { text: 'Sentiment Distribution' },
+        series: [{
+            name: 'Sentiments',
+            data: sentimentData.map(item => ({ name: item[0], y: item[1] }))
+        }]
+    });
+
+    Highcharts.chart('timeChart', {
+        chart: { type: 'line' },
+        title: { text: 'Capsules Over Time' },
+        xAxis: { type: 'datetime' },
+        series: [{
+            name: 'Capsules',
+            data: timeData.map(item => [new Date(item[0]).getTime(), item[1]])
+        }]
+    });
+});
+</script>
+{% endblock %}

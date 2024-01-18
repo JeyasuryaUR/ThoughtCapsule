@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-info/
+*.egg
+*.pyc
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media
+
+# Development
+.idea/
+.vscode/
+*.sqlite3
+*.swp
+*.swo
+*.swn
+*.bak
+*.bak2
+*.bak3
+*.DS_Store

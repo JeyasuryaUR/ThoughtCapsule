@@ -1,0 +1,89 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Thought Capsule</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+            <a class="navbar-brand" href="#"><i class="fa fa-lightbulb" aria-hidden="true"></i> ThoughtCapsule</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'my_capsules' %}"><i class="fa fa-capsules" aria-hidden="true"></i> My Capsules</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'analytics' %}"><i class="fa fa-chart-pie" aria-hidden="true"></i> Analytics</a>
+                        </li>
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-list" aria-hidden="true"></i> Categories
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{% url 'category' 1 %}"><i class="fa fa-sun" aria-hidden="true"></i> Mindfulness</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category' 2 %}"><i class="fa fa-bullseye" aria-hidden="true"></i> Personal Growth</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category' 3 %}"><i class="fa fa-lightbulb" aria-hidden="true"></i> Creativity</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category' 4 %}"><i class="fa fa-fire" aria-hidden="true"></i> Motivation</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category' 5 %}"><i class="fa fa-heart" aria-hidden="true"></i> Relationships</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category' 6 %}"><i class="fa fa-leaf" aria-hidden="true"></i> Wellness</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category' 7 %}"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> Others</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create_capsule' %}"><i class="fa fa-circle-plus" aria-hidden="true"></i> Create Capsule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                {% if user.is_authenticated %}
+                    <form class="form-inline ms-auto" action="{% url 'search' %}" method="get">
+                        <div class="input-group">
+                            <input class="form-control btn-outline-success " type="search" placeholder="Search" aria-label="Search" name="q" id="nav-search-input">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="startDictation('nav-search-input')"><i class="fa fa-microphone"></i></button>
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    <main class="container mt-4">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">Thought Capsule © 2022</span>
+        </div>
+    </footer>
+    <script src="{% static 'script.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {% block script %} {% endblock %}
+</body>
+</html>

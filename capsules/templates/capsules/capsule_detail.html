@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="card mb-3 ">
+        <div class="card-body">
+            <h4 class="card-title">{{ capsule.content }}</h4>   
+            <p class="card-text">Tags: {% for tag in capsule.tags.all %}<a href="{% url 'tag_detail' pk=tag.pk %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            {% if categories %}
+                <p class="card-text">Category: {% for category in categories %}<a href="{% url 'category' category.pk %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            {% endif %}
+        </div>
+        <div class="card-footer text-muted">
+            Created at: {{ capsule.created_at }}
+        </div>
+        {% if capsule.user == request.user %}
+            <div class="card-footer">
+                <a href="{% url 'edit_capsule' capsule.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'delete_capsule' capsule.id %}" class="btn btn-danger">Delete</a>
+            </div>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="related-capsules">
+        <h2>Related Capsules</h2>
+        {% include 'capsules/capsule_listing.html' %}
+    </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+<!-- templates/capsules/confirm_delete.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>Are you sure you want to delete this capsule?</h2>
+    <p>{{ capsule.content|truncatewords:8 }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete</button>
+    </form>
+{% endblock %}

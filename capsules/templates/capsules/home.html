@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Analytics</h2>
+            <a href="{% url 'analytics' %}">View All</a>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Capsules</h5>
+                        <p class="card-text" id="totalCapsules"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Average Sentiment</h5>
+                        <p class="card-text" id="averageSentiment"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Predicted Tags</h5>
+                        <p class="card-text" id="predictedTags"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Most Common Category</h5>
+                        <p class="card-text" id="mostCommonCategory"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h2>Highlights</h2>
+            <a href="{% url 'my_capsules' %}">View All</a>
+        </div>
+        {% include 'capsules/capsule_listing.html' %}
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('totalCapsules').textContent = "{{ total_capsules|escapejs }}";
+    document.getElementById('predictedTags').textContent = "{{ predicted_tags|join:", "|escapejs }}";
+    document.getElementById('mostCommonCategory').textContent = "{{ most_common_category|escapejs }}";
+
+    let averageSentiment = "{{ average_sentiment|floatformat:2|escapejs }}";;
+
+    let sentimentDescription;
+    if (averageSentiment >= 0.75) {
+        sentimentDescription = 'Very Positive';
+    } else if (averageSentiment >= 0.4) {
+        sentimentDescription = 'Positive';
+    } else if (averageSentiment > 0) {
+        sentimentDescription = 'Slightly Positive';
+    } else if (averageSentiment == 0) {
+        sentimentDescription = 'Neutral';
+    } else if (averageSentiment < 0) {
+        sentimentDescription = 'Slightly Negative';
+    } else if (averageSentiment <= -0.4) {
+        sentimentDescription = 'Negative';
+    } else if (averageSentiment <= -0.75) {
+        sentimentDescription = 'Very Negative'
+    } else {
+        sentimentDescription = 'Undefined';
+    }
+
+    document.getElementById('averageSentiment').textContent = `${sentimentDescription} Thoughts (~${averageSentiment})`;
+
+});
+</script>
+{% endblock %}

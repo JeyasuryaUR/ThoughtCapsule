@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="{% url 'search' %}" method="GET" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="q" value="{{ searchTxt }}" class="form-control form-control-lg me-2 rounded" placeholder="Search for more..." id="search-res-pg-input">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary btn-lg" type="button" onclick="startDictation('search-res-pg-input')"><i class="fa fa-microphone"></i></button>
+            <button type="submit" class="btn btn-lg btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+    
+    <h2>Search Results</h2>
+    {% include 'capsules/capsule_listing.html' %}
+{% endblock %}

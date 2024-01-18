@@ -1,0 +1,17 @@
+<div class="row">
+    {% for capsule in capsules %}
+        <div class="col-md-6">
+            <a href="{% url 'capsule_detail' pk=capsule.pk %}" class="text-decoration-none text-dark">
+                <div class="card mb-3 capsule-card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ capsule.content|truncatewords:8 }}</h4>
+                        <p class="card-text">Tags: {% for tag in capsule.tags.all %}<a href="{% url 'tag_detail' pk=tag.pk %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                    </div>
+                    <div class="card-footer text-muted">{{ capsule.created_at }}</div>
+                </div>
+            </a>
+        </div>
+    {% empty %}
+        <p>No capsules yet/found.</p>
+    {% endfor %}
+</div>
