@@ -26,7 +26,7 @@ class Category(models.Model):
             raise ValidationError('Cannot create more than 7 categories')
         super().save(*args, **kwargs)
 
-nlp = spacy.load('en_core_web_md')
+nlp = spacy.load('en_core_web_sm')
 
 X_train = [
     'mindfulness joy appreciating thankful meditation peace calm',
