@@ -10,13 +10,13 @@ def run_command(command):
 # Install requirements
 run_command("pip install -r requirements.txt")
 
+# Download Spacy language model
+run_command("python -m spacy download en_core_web_sm")
+
 # Convert static asset files
 run_command("python manage.py collectstatic --no-input")
 
 # Apply any outstanding database migrations
 run_command("python manage.py migrate")
-
-# Download Spacy language model
-run_command("python -m spacy download en_core_web_sm")
 
 print("Build process completed successfully.")
