@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-j3ossl%tie2o5k9qo1+e_5qu$&imm((_qwk2&#s$8p*4pevw!t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['thoughtcapsule.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
