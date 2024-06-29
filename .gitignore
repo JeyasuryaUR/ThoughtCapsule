@@ -31,3 +31,7 @@ media
 *.bak2
 *.bak3
 *.DS_Store
+
+#Environment
+env/
+.env

@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var csrftoken = getCookie('csrftoken');
 
     var fab = document.createElement('a');
-    fab.setAttribute('href', "create/");
+    fab.setAttribute('href', "/create/");
     fab.setAttribute('class', 'fab-btn btn btn-primary');
     fab.innerHTML = '<i class="fas fa-plus"></i><span class="fab-label">New Capsule</span>';
 
